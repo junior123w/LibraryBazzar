@@ -19,6 +19,7 @@ namespace LibraryBazzar.Components.ViewComponents
                 new MenuItem{Controller = "Books" , Action= "Index" , Label="List"},
                 new MenuItem{Controller = "Books" , Action= "Create" , Label="Create"},
                 }, Authorized=true ,AllowedRoles = new List<string> { "Administrator" } },
+                new MenuItem { Controller = "Home", Action = "Contact", Label = "Contact" },
                 new MenuItem{Controller = "Home" , Action= "Privacy" , Label="Privacy"},
             };
             return View(menuItems);
