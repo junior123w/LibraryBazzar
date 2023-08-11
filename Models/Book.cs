@@ -11,7 +11,7 @@ namespace LibraryBazzar.Models
         public int BookId { get; set; }
         
         [Required, MaxLength(100)]
-        public string? Title { get; set; }
+        public string Title { get; set; }
         [MaxLength(100)]
         public string? Author { get; set; }
         [MaxLength(50)]
