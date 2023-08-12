@@ -1,29 +1,47 @@
 ﻿@model LibraryBazzar.Models.Cart
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "List of your items";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1>@ViewData["Title"]</h1>
 
 <div>
-    <h4>Cart</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Active)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Active)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.User)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.User.Id)
         </dd>
     </dl>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Book Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(CartItem cartItem in Model.CartItems)
+            {
+                <tr>
+                    <td>@cartItem.Book.Title</td>
+                    <td>@cartItem.Quantity</td>
+                    <td>@cartItem.Price</td>
+                </tr>                
+            }
+        </tbody>
+    </table>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
