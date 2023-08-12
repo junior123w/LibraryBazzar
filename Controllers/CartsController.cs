@@ -35,6 +35,8 @@ namespace LibraryBazzar.Controllers
             }
 
             var cart = await _context.Carts
+                .Include(cart => cart.CartItems)
+                    .ThenInclude(cartItem =>  cartItem.Book)
                 .Include(c => c.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (cart == null)
