@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace LibraryBazzar.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    
     public class BooksController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -44,6 +44,7 @@ namespace LibraryBazzar.Controllers
         }
 
         // GET: Books/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             return View();

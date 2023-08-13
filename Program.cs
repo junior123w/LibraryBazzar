@@ -20,6 +20,18 @@ namespace LibraryBazzar
             builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            // Add dependency so controllers can read config values
+            builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+
+            // Add Sessions
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(5);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddAuthentication().AddGoogle(options =>
@@ -31,9 +43,11 @@ namespace LibraryBazzar
                 options.ClientId = googleAuth["ClientId"];
                 options.ClientSecret = googleAuth["ClientSecret"];
             });
-
             var app = builder.Build();
 
+            
+            app.UseSession();
+            
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
