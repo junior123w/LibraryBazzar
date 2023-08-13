@@ -72,7 +72,10 @@ namespace LibraryBazzar.Controllers
             if (!ModelState.IsValid) return NotFound();
             await _context.AddAsync(cartItem);
             await _context.SaveChangesAsync();
+
             return RedirectToAction("Index");
+
+
 
         }
     }
