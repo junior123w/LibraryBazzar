@@ -50,7 +50,7 @@
             <td>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <form asp-action="AddToCart">
+                        <form class ="d-inline" asp-action="AddToCart">
 
                             <input type="hidden" name="BookId" value="@item.BookId"/>
                             <input type="hidden" name="quantity" value="1"/>
@@ -60,7 +60,7 @@
                             
                         </form>
                     }
-                    <a asp-action="BookDetails" asp-route-id="@item.BookId">View Book</a>
+                    <a class="btn btn-primary" asp-action="ReviewDetails" asp-route-id="@item.BookId">View Reviews</a>
                 </td>
         </tr>
 }
