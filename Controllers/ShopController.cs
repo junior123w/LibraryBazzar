@@ -24,31 +24,32 @@ namespace LibraryBazzar.Controllers
 
             return View(departments);
         }
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> ReviewDetails(int? id)
         {
-            var bookdetails = await _context.Books
-                .FirstOrDefaultAsync(book => book.BookId == id);
+            var bookreview = await _context.Reviews
+                .FirstOrDefaultAsync(bookreview => bookreview.ReviewId == id);
 
-            return View(bookdetails);
+            return View(bookreview);
         }
 
         public async Task<IActionResult> BookDetails(int? id)
         {
-            var book = await _context.Books
+            var bookWithReview = await _context.Books
+                .Include(book =>book.Review)
                 .FirstOrDefaultAsync(book => book.BookId == id);
 
-            return View(book);
+            return View(bookWithReview);
         }
 
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> AddToCart(int BookId, int quantity)
         {
-            if (User == null) return NotFound();
-
-            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var cart = await _context.Carts
-                   .FirstOrDefaultAsync(cart => cart.UserId == userId);
+                   .FirstOrDefaultAsync(cart => cart.UserId == userId && cart.Active==true);
+
+            //creating a cart if its not there 
             if (cart == null)
             {
                 cart = new Cart { UserId = userId };
@@ -58,6 +59,8 @@ namespace LibraryBazzar.Controllers
                 await _context.SaveChangesAsync();
 
             }
+
+            //fetching the requested book
             var book = await _context.Books
                 .FirstOrDefaultAsync(book => book.BookId == BookId);
             if (book == null) return NotFound();
@@ -66,7 +69,7 @@ namespace LibraryBazzar.Controllers
                 Cart = cart,
                 Book = book,
                 Quantity = quantity,
-                Price = (decimal)book.Price
+                Price = book.Price
             };
 
             if (!ModelState.IsValid) return NotFound();

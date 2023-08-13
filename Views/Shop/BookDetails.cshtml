@@ -1,47 +1,72 @@
 ﻿@model LibraryBazzar.Models.Book
 
 @{
-    ViewData["Title"] = "Details of the book "+ Model.Title;
+    ViewData["Title"] = "BookDetails";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1>BookDetails</h1>
 
-<div>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Author)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Author)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Genre)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Genre)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Synopsis)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Synopsis)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Review.FirstOrDefault().Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Review.FirstOrDefault().ReviewDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Review.FirstOrDefault().Rating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Review.FirstOrDefault().Comments)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Review.FirstOrDefault().Book)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Review) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReviewDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comments)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Book.Title)
+            </td>
+            <td>
+                
+                <a asp-action="ReviewDetails" asp-route-id="@item.ReviewId">Reviews</a> |
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <form asp-action="AddToCart">
+
+                            <input type="hidden" name="BookId" value="@item.BookId" />
+                            <input type="hidden" name="quantity" value="1" />
+
+                            <input type="submit" value="AddToCart" class="btn btn-primary" />
+
+
+                        </form>
+                    }
+                
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
